@@ -18,7 +18,7 @@ app.use('/signup', (req, res) => {
     console.log(req.body);
     console.log("Signup Request");
     res.send({
-      token: 'test123'
+      token: req.body.fullname
     });
   });
 

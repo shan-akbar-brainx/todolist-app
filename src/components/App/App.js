@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Dashboard from '../Dashboard/Dashboard';
 import SignUp from '../SignUp/SignUp';
 import Login from '../Login/Login';
-import User from '../User/User';
+import Account from '../Account/Account';
 import Preferences from '../Preferences/Preferences';
 import useToken from './useToken';
 
@@ -12,9 +12,9 @@ import useToken from './useToken';
 
 function App() {
   const { token, setToken } = useToken();
-  if(window.location.pathname == "/signup" && !token){
+  if(window.location.pathname === "/signup" && !token){
     return <SignUp setToken={setToken}  />
-  }else if(window.location.pathname == "/signup" && token){
+  }else if(window.location.pathname === "/signup" && token){
     window.location.pathname = '';
   }
 
@@ -23,7 +23,10 @@ function App() {
   }
   return (
     <div className="wrapper">
-      <h1>To Do List</h1>
+      <div className='header'>
+        <h1>To Do List</h1>
+        <h2><a href="/account">Account</a></h2>
+      </div>
       <nav>
         <a href="/">Home</a><br></br>
         <a href="/dashboard">Dashboard</a><br></br>
@@ -33,7 +36,7 @@ function App() {
         <Routes>
           <Route exact path='/dashboard' element={<Dashboard/>}/>
           <Route exact path='/preferences' element={<Preferences/>}/>
-          <Route exact path='/user' element={<User/>}/>
+          <Route exact path='/account' element={<Account token={token}/>}/>
         </Routes>
       </BrowserRouter>
     </div>
