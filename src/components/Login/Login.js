@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import './Login.css';
 
 async function loginUser(credentials) {
-  return fetch('http://localhost:8080/login', {
+  return fetch('http://localhost:8080/api/user/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -14,34 +14,43 @@ async function loginUser(credentials) {
  }
 
 export default function Login({ setToken }) {
-  const [username, setUserName] = useState();
+  const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  const [error, setError] = useState();
   const handleSubmit = async e => {
     e.preventDefault();
     const token = await loginUser({
-      username,
+      email,
       password
     });
-    setToken(token);
+    if(token.status === 'failed'){
+      setError(token.message)
+    }else if(token.status === 'success'){
+      setToken(token);
+    }
   }
 
   return(
     <div className="login-wrapper">
-      <h1>Please Log In</h1>
+      <h1>To Do List Application</h1>
+      <h2>Please Log In</h2>
       <form onSubmit={handleSubmit} >
         <label>
-          <p>Username</p>
-          <input type="text" onChange={e => setUserName(e.target.value)} />
+          <p>Email:</p>
+          <input type="email" onChange={e => setEmail(e.target.value)} />
         </label>
         <label>
-          <p>Password</p>
+          <p>Password:</p>
           <input type="password" onChange={e => setPassword(e.target.value)} />
         </label>
-        <div>
-          <button type="submit">Submit</button>
+        <p className='error-message'>{ error }</p>
+        <div className='login-submit'>
+          <button type="submit">Sign in</button>
         </div>
       </form>
-      <a href="/signup">New User? Sign Up</a>
+      <div className='signup-link'>
+        <a href="/signup">New User? Sign Up</a>
+      </div>
     </div>
   )
 }
